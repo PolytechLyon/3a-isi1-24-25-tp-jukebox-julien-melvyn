@@ -3,8 +3,7 @@
 import { usePlayList } from "../composables/usePlayList.js";
 
 const props = defineProps({
-    title: String,
-    index: Number,
+    track: Object   
 });
 
 const {
@@ -13,18 +12,18 @@ const {
 } = usePlayList();
 
 function removeTrack() {
-    remove(props.index);
+    remove(props.track.index);
 }
 
 function playTrack() {
-    play(props.index);
+    play(props.track.index);
 }
 
 </script>
 
 <template>
     <li>
-        <span>{{ props.title }}</span>
+        <span>{{ props.track.title }}</span>
         <button @click="playTrack">play</button>
         <button @click="removeTrack">delete</button>
     </li>

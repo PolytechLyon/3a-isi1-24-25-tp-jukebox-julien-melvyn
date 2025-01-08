@@ -4,8 +4,13 @@ const list = ref([]);
 const tracks = readonly(list);
 const playedTrackIndex = ref();
 
-function add(title) {
-    list.value.push(title);
+function add(trackName, trackUrl) {
+    const track = {
+        index : list.value.length+1,
+        title : trackName,
+        url : trackUrl
+    }
+    list.value.push(track);
 }
 
 function remove(index) {
