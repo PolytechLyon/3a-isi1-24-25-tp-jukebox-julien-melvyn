@@ -14,4 +14,5 @@ const { tracks } = usePlayList();
 </template>
 
 <style scoped>
+
 </style>
