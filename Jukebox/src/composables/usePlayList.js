@@ -15,7 +15,7 @@ function add(trackName, trackUrl) {
 }
 
 function remove(index) {
-    list.value.splice(index, 1);
+    list.value.splice(index-1, 1);
 }
 
 function play(index) {

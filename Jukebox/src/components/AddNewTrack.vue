@@ -23,7 +23,11 @@ function updateFile(e) {
 }
 
 function addTrack() {
-    add(trackName.value, trackUrl.value);
+    let name = trackName.value;
+    if (name == "") {
+        name = trackUrl.value;
+    }
+    add(name, trackUrl.value);
     
     trackUrl.value = '';
     trackName.value = '';
