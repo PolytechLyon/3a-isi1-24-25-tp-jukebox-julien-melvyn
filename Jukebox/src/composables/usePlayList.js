@@ -19,11 +19,11 @@ function remove(index) {
 }
 
 function play(index) {
-    playedTrackIndex.value = index;
+    playedTrackIndex.value = index - 1;
 }
 
 function pause() {
-    paused = !paused;
+    paused.value = !paused.value;
 }
 
 const isPlaying = computed(() => playedTrackIndex.value !== undefined);

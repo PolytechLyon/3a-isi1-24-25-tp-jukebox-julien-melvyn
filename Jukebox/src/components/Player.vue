@@ -4,7 +4,8 @@
         isPlaying,
         playedTrack,
         pause,
-        progression
+        progression,
+        paused
         } = usePlayList();
 </script>
 
@@ -12,7 +13,7 @@
     <h2>Player</h2>
     <div id="played-track">
         <div v-if="isPlaying">
-            <p>Now playing : <playedTrack /></p>
+            <p>Now playing : {{ playedTrack.title }}</p>
             <span v-if="paused">
                 <button @click="pause">play</button>
             </span>
