@@ -28,6 +28,7 @@ watchEffect(() => {
 </script>
 
 <template>
+    <h2>Add new track</h2>
     <label>Add track</label>
     <select>
         <option>Via Url</option>

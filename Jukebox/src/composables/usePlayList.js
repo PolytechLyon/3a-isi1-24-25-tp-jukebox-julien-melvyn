@@ -13,7 +13,7 @@ function remove(index) {
 }
 
 function play(index) {
-    //TODO
+    playedTrackIndex.value = index;
 }
 
 const isPlaying = computed(() => playedTrackIndex.value !== undefined);

@@ -7,11 +7,8 @@ import AddNewTrack from './components/AddNewTrack.vue';
 <template>
  	<h1>Jukebox</h1>
 	<Player /> 
-  <h1>Playlist</h1>
-  <PlayList />
-  <h1>Add new track</h1>
-  <add-new-track />
-  
+	<PlayList />
+	<AddNewTrack />
 </template>
 
 <style scoped>
