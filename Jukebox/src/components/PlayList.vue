@@ -8,6 +8,7 @@ const { tracks } = usePlayList();
 </script>
 
 <template>
+    <h2>Playlist</h2>
     <ol v-for="track in tracks" :key="track.index">
         <Track :track />
     </ol>
