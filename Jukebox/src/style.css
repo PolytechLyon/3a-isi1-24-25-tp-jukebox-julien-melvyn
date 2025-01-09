@@ -1,0 +1,10 @@
+#app
+{
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.no-wrap
+{
+    white-space: nowrap;
+}

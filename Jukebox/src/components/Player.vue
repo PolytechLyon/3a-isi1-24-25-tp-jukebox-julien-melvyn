@@ -1,0 +1,98 @@
+<script setup>
+import { ref, watch } from "vue";
+import { usePlayList } from "../composables/usePlayList.js";
+
+const {
+    isPlaying,
+    playedTrack,
+    pause,
+    progression,
+    paused
+} = usePlayList();
+
+const audioRef    = ref(null);
+const progressRef = ref(null); // Référence à la barre de progression
+
+// Fonction pour basculer entre play et pause
+function togglePause() {
+    if (!audioRef.value) {
+        console.error("AudioRef is not available");
+        return;
+    }
+
+    // Si l'audio est en pause, on le lance
+    if (paused.value) {
+        console.log("Playing audio...");
+        audioRef.value.play().then(() => {
+            console.log("Lecture démarrée avec succès !");
+        }).catch((err) => {
+            console.error("Erreur lors de la tentative de lecture :", err);
+        });
+    } else { // Sinon on le met en pause
+        console.log("Pausing audio...");
+        audioRef.value.pause();
+    }
+
+    // Basculer l'état de la pause
+    pause();
+}
+
+// Fonction appelée quand l'audio est chargé
+function onAudioLoaded() {
+    console.log("Audio chargé avec succès !");
+    if (audioRef.value && !isPlaying.value) {
+        audioRef.value.play();
+    }
+}
+
+// Fonction pour mettre à jour la barre de progression
+function updateProgress() {
+    if (audioRef.value && progressRef.value) {
+        const progress = (audioRef.value.currentTime / audioRef.value.duration) || 0;
+        progressRef.value.value = progress;
+    }
+}
+
+// Observer les changements de la piste jouée
+watch(() => playedTrack.url, (newUrl) => {
+    if (audioRef.value) {
+        console.log("Mise à jour de la source audio :", newUrl);
+        audioRef.value.src = newUrl;
+        audioRef.value.load();
+    }
+});
+</script>
+
+<template>
+    <h2>Player</h2>
+    <div id="played-track">
+        <div v-if="playedTrack && playedTrack.url">
+            <p>Now playing: {{ playedTrack.title }}</p>
+            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress">
+                <source :src="playedTrack.url" type="audio/ogg">
+            </audio>
+            <button v-if="paused" @click="togglePause">Play</button>
+            <button v-else        @click="togglePause">Pause</button>
+            <label for="progress-audio">Music progress:</label>
+            <progress ref="progressRef" id="progress-audio" max="1" :value="progression"></progress>
+        </div>
+        <div v-else>
+            <p>Choose a track to play.</p>
+        </div>
+    </div>
+    <div id="loop-setting">
+        <fieldset>
+            <legend>Playback mode:</legend>
+            <label for="loop-forever">Repeat list</label>
+            <input type="radio" id="loop-forever" name="loop-type" checked>
+            <label for="loop-track">Repeat track</label>
+            <input type="radio" id="loop-track" name="loop-type">
+            <label for="loop-once">Don't repeat</label>
+            <input type="radio" id="loop-once" name="loop-type">
+        </fieldset>
+    </div>
+</template>
+
+<style scoped>
+/* Style optionnel pour améliorer l'apparence */
+</style>
