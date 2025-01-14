@@ -24,7 +24,7 @@ function playTrack() {
 <template>
     <li>
         <span>{{ props.track.title }}</span>
-        <button @click="playTrack">play</button>
+        <button @click="playTrack"  >play</button>
         <button @click="removeTrack">delete</button>
     </li>
 </template>

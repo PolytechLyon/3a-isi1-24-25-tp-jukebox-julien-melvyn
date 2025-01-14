@@ -28,7 +28,11 @@ function remove(index) {
         playedTrackIndex.value = undefined;
     }
 
-    list.value.splice(index, 1);
+    if (list.value.length > 1) {
+        list.value.splice(index, 1);
+    } else {
+        list.value = [];
+    }
 }
 
 // Lecture d'une piste

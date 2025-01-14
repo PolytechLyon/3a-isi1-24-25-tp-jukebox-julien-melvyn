@@ -1,8 +1,8 @@
 <script setup>
 import { usePlayList } from "../composables/usePlayList.js";
-import { ref, useTemplateRef } from "vue";
+import { ref } from "vue";
 
-const trackUrl = ref('');
+const trackUrl  = ref('');
 const trackName = ref('');
 const trackType = ref('url');
 
@@ -22,11 +22,14 @@ function updateFile(e) {
 function addTrack() {
     if (!trackUrl.value) return;
 
-    const name = trackName.value || "Unnamed Track";
+    const name = trackName.value || trackUrl.value.split("/").pop().split(".mp3")[0];
     add(name, trackUrl.value);
 
+    const inputFile = document.getElementById("inputFile");
+    inputFile.value = '';
+
     // Réinitialiser les champs après ajout
-    trackUrl.value = '';
+    trackUrl.value  = '';
     trackName.value = '';
 }
 
@@ -54,9 +57,11 @@ function addOnEnter(event) {
     />
     <input 
         v-else 
+        id="inputFile"
         type="file" 
         @change="updateFile" 
-        ref="input" 
+        ref="input"
+        accept=".mp3"
     />
     <button @click="addTrack">Add</button>
 </template>
