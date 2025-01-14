@@ -84,8 +84,8 @@ function nextTrack() {
 
 function changeLooping(event) {
     if(event.target.id === "loop-forever") loopingType.value = 0;
-    if(event.target.id === "loop-track") loopingType.value = 1;
-    if(event.target.id === "loop-once") loopingType.value = 2;
+    if(event.target.id === "loop-track")   loopingType.value = 1;
+    if(event.target.id === "loop-once")    loopingType.value = 2;
     console.log(loopingType.value);
 }
 
@@ -111,7 +111,7 @@ function onError() {
 <template>
     <h2>Player</h2>
     <div id="played-track">
-        <div v-if="playedTrack && playedTrack.url">
+        <div v-if="playedTrack && !playedTrack.isBlocked && playedTrack.url">
             <p>Now playing: {{ playedTrack.title }}</p>
             <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack" @error="onError" >
                 <source :src="playedTrack.url" type="audio/ogg">
