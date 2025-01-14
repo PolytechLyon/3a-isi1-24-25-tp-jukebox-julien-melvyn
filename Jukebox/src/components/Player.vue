@@ -53,6 +53,15 @@ function updateProgress() {
     }
 }
 
+function changeAudioPosition(event) {
+    var progressBar = event.target;
+
+    var x = event.pageX - progressBar.getBoundingClientRect().left;
+    var newValue = audioRef.value.duration * (x / progressBar.offsetWidth);
+    
+    audioRef.value.currentTime = newValue;
+}
+
 // Observer les changements de la piste jouée
 watch(() => playedTrack.url, (newUrl) => {
     if (audioRef.value) {
@@ -74,7 +83,7 @@ watch(() => playedTrack.url, (newUrl) => {
             <button v-if="paused" @click="togglePause">Play</button>
             <button v-else        @click="togglePause">Pause</button>
             <label for="progress-audio">Music progress:</label>
-            <progress ref="progressRef" id="progress-audio" max="1" :value="progression"></progress>
+            <progress ref="progressRef" id="progress-audio" max="1" :value="progression" @click="changeAudioPosition"></progress>
         </div>
         <div v-else>
             <p>Choose a track to play.</p>
