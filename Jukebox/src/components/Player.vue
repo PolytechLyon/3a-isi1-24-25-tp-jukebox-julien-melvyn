@@ -7,7 +7,8 @@ const {
     playedTrack,
     pause,
     progression,
-    paused
+    paused,
+    block,
 } = usePlayList();
 
 const audioRef    = ref(null);
@@ -15,8 +16,8 @@ const progressRef = ref(null); // Référence à la barre de progression
 
 // Fonction pour basculer entre play et pause
 function togglePause() {
-    if (!audioRef.value) {
-        console.error("AudioRef is not available");
+    if (!audioRef.value || playedTrack.value.isBlocked == true) {
+        console.error("Audio error");
         return;
     }
 
@@ -26,6 +27,7 @@ function togglePause() {
         audioRef.value.play().then(() => {
             console.log("Lecture démarrée avec succès !");
         }).catch((err) => {
+            block(playedTrack.value);
             console.error("Erreur lors de la tentative de lecture :", err);
         });
     } else { // Sinon on le met en pause
@@ -40,7 +42,9 @@ function togglePause() {
 // Fonction appelée quand l'audio est chargé
 function onAudioLoaded() {
     console.log("Audio chargé avec succès !");
-    if (audioRef.value && !isPlaying.value) {
+    console.log(audioRef.value + isPlaying.value);
+    if (audioRef.value && isPlaying.value) {
+        console.log("play");
         audioRef.value.play();
     }
 }

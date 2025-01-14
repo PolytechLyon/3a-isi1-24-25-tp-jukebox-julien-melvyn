@@ -23,7 +23,7 @@ function playTrack() {
 
 <template>
     <li>
-        <span>{{ props.track.title }}</span>
+        <span :style="[props.track.isBlocked == true ? 'text-decoration: line-through' : '']">{{ props.track.title }}</span>
         <button @click="playTrack"  >play</button>
         <button @click="removeTrack">delete</button>
     </li>

@@ -3,7 +3,7 @@ import { computed, readonly, ref } from "vue";
 const list = ref([]);           // Liste des pistes
 const tracks = readonly(list);  // Liste en lecture seule
 const playedTrackIndex = ref(); // Index de la piste en cours de lecture
-const paused = ref(true);       // État de pause
+const paused = ref(false);       // État de pause
 
 // Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
@@ -11,8 +11,13 @@ function add(trackName, trackUrl) {
         index: list.value.length,
         title: trackName,
         url: trackUrl,
+        isBlocked: false,
     };
     list.value.push(track);
+}
+
+function block(track) {
+    track.isBlocked = true;
 }
 
 // Suppression d'une piste et révocation de l'URL blob si nécessaire
@@ -75,5 +80,6 @@ export function usePlayList() {
         playedTrack,
         paused,
         progression,
+        block,
     };
 }

@@ -26,7 +26,9 @@ function addTrack() {
     add(name, trackUrl.value);
 
     const inputFile = document.getElementById("inputFile");
-    inputFile.value = '';
+    if (inputFile != null) {
+        inputFile.value = '';
+    }
 
     // Réinitialiser les champs après ajout
     trackUrl.value  = '';
@@ -61,7 +63,6 @@ function addOnEnter(event) {
         type="file" 
         @change="updateFile" 
         ref="input"
-        accept=".mp3"
     />
     <button @click="addTrack">Add</button>
 </template>
