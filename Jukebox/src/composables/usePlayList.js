@@ -1,9 +1,9 @@
 import { computed, readonly, ref } from "vue";
 
-const list = ref([]); // Liste des pistes
-const tracks = readonly(list); // Liste en lecture seule
+const list = ref([]);           // Liste des pistes
+const tracks = readonly(list);  // Liste en lecture seule
 const playedTrackIndex = ref(); // Index de la piste en cours de lecture
-const paused = ref(false); // État de pause
+const paused = ref(true);       // État de pause
 
 // Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
@@ -54,9 +54,9 @@ function clearAllTracks() {
 }
 
 // Calculs dérivés
-const isPlaying = computed(() => playedTrackIndex.value !== undefined);
+const isPlaying   = computed(() => playedTrackIndex.value !== undefined);
 const playedTrack = computed(() => list.value[playedTrackIndex.value]);
-const progression = computed(() => (isPlaying.value ? 0 : null)); // Exemple simplifié
+const progression = computed(() => (isPlaying.value ? 0 : null));
 
 // Export des fonctions et propriétés
 export function usePlayList() {
