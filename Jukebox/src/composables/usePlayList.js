@@ -3,7 +3,7 @@ import { computed, readonly, ref } from "vue";
 const list = ref([]);           // Liste des pistes
 const tracks = readonly(list);  // Liste en lecture seule
 const playedTrackIndex = ref(); // Index de la piste en cours de lecture
-const paused = ref(false);       // État de pause
+const paused = ref(false);      // État de pause
 
 // Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
@@ -62,6 +62,14 @@ function clearAllTracks() {
     playedTrackIndex.value = undefined;
 }
 
+function playNextTrack(loopingType) {
+    if(loopingType === 0) {
+        playedTrackIndex.value += 1;
+    }
+    playedTrackIndex.value = playedTrackIndex.value % list.length;
+    play(playedTrackIndex.value);
+}
+
 // Calculs dérivés
 const isPlaying   = computed(() => playedTrackIndex.value !== undefined);
 const playedTrack = computed(() => list.value[playedTrackIndex.value]);
@@ -81,5 +89,6 @@ export function usePlayList() {
         paused,
         progression,
         block,
+        playNextTrack,
     };
 }

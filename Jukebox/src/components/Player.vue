@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import { usePlayList } from "../composables/usePlayList.js";
 
 const {
@@ -9,10 +9,12 @@ const {
     progression,
     paused,
     block,
+    playNextTrack
 } = usePlayList();
 
 const audioRef    = ref(null);
 const progressRef = ref(null); // Référence à la barre de progression
+const loopingType = ref(0);
 
 // Fonction pour basculer entre play et pause
 function togglePause() {
@@ -66,6 +68,17 @@ function changeAudioPosition(event) {
     audioRef.value.currentTime = newValue;
 }
 
+function nextTrack() {
+    playNextTrack(loopingType);
+}
+
+function changeLooping(event) {
+    if(event.target.id === "loop-forever") loopingType.value = 0;
+    if(event.target.id === "loop-track") loopingType.value = 1;
+    if(event.target.id === "loop-once") loopingType.value = 2;
+    console.log(loopingType.value);
+}
+
 // Observer les changements de la piste jouée
 watch(() => playedTrack.url, (newUrl) => {
     if (audioRef.value) {
@@ -74,6 +87,9 @@ watch(() => playedTrack.url, (newUrl) => {
         audioRef.value.load();
     }
 });
+
+watchEffect
+
 </script>
 
 <template>
@@ -81,7 +97,7 @@ watch(() => playedTrack.url, (newUrl) => {
     <div id="played-track">
         <div v-if="playedTrack && playedTrack.url">
             <p>Now playing: {{ playedTrack.title }}</p>
-            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress">
+            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack">
                 <source :src="playedTrack.url" type="audio/ogg">
             </audio>
             <button v-if="paused" @click="togglePause">Play</button>
@@ -97,11 +113,11 @@ watch(() => playedTrack.url, (newUrl) => {
         <fieldset>
             <legend>Playback mode:</legend>
             <label for="loop-forever">Repeat list</label>
-            <input type="radio" id="loop-forever" name="loop-type" checked>
+            <input type="radio" id="loop-forever" name="loop-type" @click="changeLooping" checked>
             <label for="loop-track">Repeat track</label>
-            <input type="radio" id="loop-track" name="loop-type">
+            <input type="radio" id="loop-track" name="loop-type" @click="changeLooping">
             <label for="loop-once">Don't repeat</label>
-            <input type="radio" id="loop-once" name="loop-type">
+            <input type="radio" id="loop-once" name="loop-type" @click="changeLooping">
         </fieldset>
     </div>
 </template>
