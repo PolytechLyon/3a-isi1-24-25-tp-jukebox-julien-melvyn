@@ -35,7 +35,11 @@ function togglePause() {
         });
     } else { // Sinon on le met en pause
         console.log("Pausing audio...");
-        audioRef.value.pause();
+        audioRef.value.pause()
+        .catch((err) => {
+            block(playedTrack.value);
+            console.error("Erreur lors de la tentative de lecture :", err);
+        });;
     }
 
     // Basculer l'état de la pause
@@ -52,7 +56,8 @@ function onAudioLoaded() {
             console.log("Lecture démarrée avec succès !");
         }).catch(() => {
             block(playedTrack.value);
-            console.error("Erreur lors de la tentative de lecture :", err);});
+            console.error("Erreur lors de la tentative de lecture :", err);
+        });
     }
 }
 
@@ -96,7 +101,10 @@ watchEffect(() =>  {
     }
 });
 
-watchEffect
+function onError() {
+    block(playedTrack.value);
+    console.error("Erreur fichier non musical");
+}
 
 </script>
 
@@ -105,7 +113,7 @@ watchEffect
     <div id="played-track">
         <div v-if="playedTrack && playedTrack.url">
             <p>Now playing: {{ playedTrack.title }}</p>
-            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack">
+            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack" @error="onError" >
                 <source :src="playedTrack.url" type="audio/ogg">
             </audio>
             <button v-if="paused" @click="togglePause">Play</button>
