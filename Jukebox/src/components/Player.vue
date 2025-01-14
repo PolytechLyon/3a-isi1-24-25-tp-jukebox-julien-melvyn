@@ -9,7 +9,8 @@ const {
     progression,
     paused,
     block,
-    playNextTrack
+    playNextTrack,
+    playingSameTrack,
 } = usePlayList();
 
 const audioRef    = ref(null);
@@ -89,7 +90,10 @@ watchEffect(() =>  {
     if (audioRef.value != null) {
         audioRef.value.src = playedTrack.value.url;
     }
-    
+    if (playingSameTrack.value === true) {
+        togglePause();
+        togglePause();
+    }
 });
 
 watchEffect

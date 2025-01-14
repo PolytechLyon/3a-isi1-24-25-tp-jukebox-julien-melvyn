@@ -9,7 +9,23 @@
     white-space: nowrap;
 }
 
-button, input, select
+button, input, select, progress
 {
-    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+progress
+{
+    width: 60%;
+}
+
+fieldset{
+    margin-top: 10px;
+    width: fit-content;
+}
+
+fieldset input
+{
+    margin-right: 40px;
 }
