@@ -5,7 +5,7 @@ import { usePlayList } from "../composables/usePlayList.js";
 const {
     isPlaying,
     playedTrack,
-    pause,
+    mettreEnPause,
     progression,
     paused,
     block,
@@ -19,7 +19,7 @@ const loopingType = ref(0);
 
 // Fonction pour basculer entre play et pause
 function togglePause() {
-    if (!audioRef.value || playedTrack.value.isBlocked == true) {
+    if (!audioRef.value || playedTrack.value === undefined || playedTrack.value.isBlocked == true) {
         console.error("Audio error");
         return;
     }
@@ -29,21 +29,18 @@ function togglePause() {
         console.log("Playing audio...");
         audioRef.value.play().then(() => {
             console.log("Lecture démarrée avec succès !");
-        }).catch((err) => {
+        }).catch(() => {
             block(playedTrack.value);
-            console.error("Erreur lors de la tentative de lecture :", err);
         });
     } else { // Sinon on le met en pause
-        console.log("Pausing audio...");
-        audioRef.value.pause()
-        .catch((err) => {
-            block(playedTrack.value);
-            console.error("Erreur lors de la tentative de lecture :", err);
-        });;
+        if (!playedTrack.value.isBlocked && playedTrack.value !== null) {
+            console.log("Pausing audio...");
+            audioRef.value.pause();
+        }
     }
 
     // Basculer l'état de la pause
-    pause();
+    mettreEnPause();
 }
 
 // Fonction appelée quand l'audio est chargé
@@ -56,7 +53,6 @@ function onAudioLoaded() {
             console.log("Lecture démarrée avec succès !");
         }).catch(() => {
             block(playedTrack.value);
-            console.error("Erreur lors de la tentative de lecture :", err);
         });
     }
 }
@@ -92,18 +88,19 @@ function changeLooping(event) {
 // Observer les changements de la piste jouée
 watchEffect(() =>  {
     console.log("Change music");
-    if (audioRef.value != null) {
+    if (audioRef.value !== null && playedTrack.value !== undefined) {
         audioRef.value.src = playedTrack.value.url;
     }
     if (playingSameTrack.value === true) {
-        togglePause();
+        const audio = document.getElementById("audio");
         togglePause();
     }
 });
 
 function onError() {
-    block(playedTrack.value);
     console.error("Erreur fichier non musical");
+    block(playedTrack.value);
+    nextTrack();
 }
 
 </script>
@@ -113,7 +110,7 @@ function onError() {
     <div id="played-track">
         <div v-if="playedTrack && !playedTrack.isBlocked && playedTrack.url">
             <p>Now playing: {{ playedTrack.title }}</p>
-            <audio ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack" @error="onError" >
+            <audio id="audio" ref="audioRef" @loadeddata="onAudioLoaded" @timeupdate="updateProgress" @ended="nextTrack" @error="onError" :autoplay="playingSameTrack.value" >
                 <source :src="playedTrack.url" type="audio/ogg">
             </audio>
             <button v-if="paused" @click="togglePause">Play</button>

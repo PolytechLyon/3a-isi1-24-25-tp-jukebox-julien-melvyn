@@ -43,12 +43,12 @@ function remove(index) {
 
 // Lecture d'une piste
 function play(index) {
-    if(playedTrackIndex.value === index) playingSameTrack.value = true;
+    playingSameTrack.value = playedTrackIndex.value === index ? true : false;
     playedTrackIndex.value = index;
 }
 
 // Pause ou reprise de la lecture
-function pause() {
+function mettreEnPause() {
     paused.value = !paused.value;
 }
 
@@ -65,6 +65,7 @@ function clearAllTracks() {
 }
 
 function playNextTrack(loopingType) {
+    console.log("playNextTrack");
     if(loopingType.value === 0) {
         playedTrackIndex.value += 1;
         playedTrackIndex.value = playedTrackIndex.value % list.value.length;
@@ -93,7 +94,7 @@ export function usePlayList() {
         add,
         remove,
         play,
-        pause,
+        mettreEnPause,
         clearAllTracks,
         isPlaying,
         playedTrack,
