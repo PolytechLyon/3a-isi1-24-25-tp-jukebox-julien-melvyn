@@ -1,51 +1,75 @@
 import { computed, readonly, ref } from "vue";
 
-const list = ref([]);
-const tracks = readonly(list);
-const playedTrackIndex = ref();
-const paused = ref(false);
+const list = ref([]); // Liste des pistes
+const tracks = readonly(list); // Liste en lecture seule
+const playedTrackIndex = ref(); // Index de la piste en cours de lecture
+const paused = ref(false); // État de pause
 
+// Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
     const track = {
-        index : list.value.length+1,
-        title : trackName,
-        url : trackUrl
-    }
+        index: list.value.length,
+        title: trackName,
+        url: trackUrl,
+    };
     list.value.push(track);
 }
 
+// Suppression d'une piste et révocation de l'URL blob si nécessaire
 function remove(index) {
-    list.value.splice(index-1, 1);
+    const track = list.value[index];
+    if (track?.url.startsWith("blob:")) {
+        console.log(`Révocation de l'URL blob : ${track.url}`);
+        URL.revokeObjectURL(track.url);
+    }
+
+    // Réinitialiser la piste en cours de lecture si elle est supprimée
+    if (index === playedTrackIndex.value) {
+        playedTrackIndex.value = undefined;
+    }
+
+    list.value.splice(index, 1);
 }
 
+// Lecture d'une piste
 function play(index) {
-    playedTrackIndex.value = index - 1;
+    playedTrackIndex.value = index;
 }
 
+// Pause ou reprise de la lecture
 function pause() {
     paused.value = !paused.value;
 }
 
-const isPlaying = computed(() => playedTrackIndex.value !== undefined);
-
-const playedTrack = computed(() => list.value[playedTrackIndex.value]);
-
-const progression = computed(() => isPlaying ? 0 : list.value[playedTrackIndex.value]);
-
-if(isPlaying && !paused) {
-    playedTrack.url.play();
+// Réinitialisation de la liste et révocation de tous les blobs
+function clearAllTracks() {
+    list.value.forEach((track) => {
+        if (track.url.startsWith("blob:")) {
+            console.log(`Révocation de l'URL blob : ${track.url}`);
+            URL.revokeObjectURL(track.url);
+        }
+    });
+    list.value = [];
+    playedTrackIndex.value = undefined;
 }
 
+// Calculs dérivés
+const isPlaying = computed(() => playedTrackIndex.value !== undefined);
+const playedTrack = computed(() => list.value[playedTrackIndex.value]);
+const progression = computed(() => (isPlaying.value ? 0 : null)); // Exemple simplifié
+
+// Export des fonctions et propriétés
 export function usePlayList() {
     return {
         tracks,
         add,
         remove,
         play,
+        pause,
+        clearAllTracks,
         isPlaying,
         playedTrack,
-        pause,
         paused,
-        progression
-    }
+        progression,
+    };
 }
