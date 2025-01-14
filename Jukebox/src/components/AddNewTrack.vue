@@ -63,7 +63,7 @@ function addOnEnter(event) {
         @change="updateFile" 
         ref="input"
     />
-    <button @click="addTrack">Add</button>
+    <button @click="addTrack" :disabled="false">Add</button>
 </template>
 
 <style scoped>
