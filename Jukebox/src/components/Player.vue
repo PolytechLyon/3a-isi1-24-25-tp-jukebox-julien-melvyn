@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watchEffect } from "vue";
 import { usePlayList } from "../composables/usePlayList.js";
 
 const {
@@ -45,7 +45,11 @@ function onAudioLoaded() {
     console.log(audioRef.value + isPlaying.value);
     if (audioRef.value && isPlaying.value) {
         console.log("play");
-        audioRef.value.play();
+        audioRef.value.play().then(() => {
+            console.log("Lecture démarrée avec succès !");
+        }).catch(() => {
+            block(playedTrack.value);
+            console.error("Erreur lors de la tentative de lecture :", err);});
     }
 }
 
@@ -67,12 +71,12 @@ function changeAudioPosition(event) {
 }
 
 // Observer les changements de la piste jouée
-watch(() => playedTrack.url, (newUrl) => {
-    if (audioRef.value) {
-        console.log("Mise à jour de la source audio :", newUrl);
-        audioRef.value.src = newUrl;
-        audioRef.value.load();
+watchEffect(() =>  {
+    console.log("Change music");
+    if (audioRef.value != null) {
+        audioRef.value.src = playedTrack.value.url;
     }
+    
 });
 </script>
 

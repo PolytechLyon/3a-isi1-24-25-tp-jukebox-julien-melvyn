@@ -15,7 +15,6 @@ function updateFile(e) {
     const file = files[0];
     const blob = new Blob([file], { type: file.type || 'audio/mp3' });
     trackUrl.value = URL.createObjectURL(blob);
-    console.log("Blob URL générée :", trackUrl.value);
     trackName.value = file.name;
 }
 
