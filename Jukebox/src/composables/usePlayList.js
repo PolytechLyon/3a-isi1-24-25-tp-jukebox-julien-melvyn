@@ -30,7 +30,11 @@ const isPlaying = computed(() => playedTrackIndex.value !== undefined);
 
 const playedTrack = computed(() => list.value[playedTrackIndex.value]);
 
-const progression = isPlaying ? 0 : list.value[playedTrackIndex.value];
+const progression = computed(() => isPlaying ? 0 : list.value[playedTrackIndex.value]);
+
+if(isPlaying && !paused) {
+    playedTrack.url.play();
+}
 
 export function usePlayList() {
     return {
