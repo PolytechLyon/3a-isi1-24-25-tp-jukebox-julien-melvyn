@@ -43,7 +43,7 @@ function remove(index) {
 
 // Lecture d'une piste
 function play(index) {
-    playingSameTrack.value = playedTrackIndex.value === index ? true : false;
+    playingSameTrack.value = playedTrackIndex.value === index;
     playedTrackIndex.value = index;
 }
 
