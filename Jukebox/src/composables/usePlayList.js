@@ -45,6 +45,7 @@ function remove(index) {
 // Lecture d'une piste
 function play(index) {
     playedTrackIndex.value = index;
+    paused.value = false;
 }
 
 // Pause ou reprise de la lecture
@@ -67,8 +68,7 @@ function clearAllTracks() {
 function playNextTrack(loopingType) {
     console.log("playNextTrack");
     const oldTrack = playedTrackIndex.value;
-
-    if(loopingType.value === 2) {
+    if(loopingType.value === 2 || loopingType.value === 3) {
         playingSameTrack.value = false;
 
     } else {
@@ -106,6 +106,9 @@ function playNextTrack(loopingType) {
         else {
             stopPlaying.value = true;
         }
+    }
+    if(loopingType.value === 3) {
+        stopPlaying.value = true;
     }
 }
 
