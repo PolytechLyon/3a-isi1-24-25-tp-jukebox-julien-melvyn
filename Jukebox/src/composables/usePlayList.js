@@ -5,6 +5,7 @@ const tracks = readonly(list);  // Liste en lecture seule
 const playedTrackIndex = ref(); // Index de la piste en cours de lecture
 const paused = ref(false);      // État de pause
 const playingSameTrack = ref(false);
+const stopPlaying = ref(false);
 
 // Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
@@ -66,6 +67,7 @@ function clearAllTracks() {
 function playNextTrack(loopingType) {
     console.log("playNextTrack");
     const oldTrack = playedTrackIndex.value;
+    stopPlaying.value = false;
     if(loopingType.value === 0) {
         playedTrackIndex.value += 1;
         playedTrackIndex.value = playedTrackIndex.value % list.value.length;
@@ -79,8 +81,15 @@ function playNextTrack(loopingType) {
             playedTrackIndex.value += 1;
             play(playedTrackIndex.value);
         }
+        else {
+            stopPlaying.value = true;
+        }
     }
-    if(loopingType.value === 2) {
+    if(loopingType.value === 3) {
+        stopPlaying.value = true;
+    }
+
+    if(loopingType.value === 2 || loopingType.value === 3) {
         playingSameTrack.value = false;
     }
     else {
@@ -109,5 +118,6 @@ export function usePlayList() {
         block,
         playNextTrack,
         playingSameTrack,
+        stopPlaying,
     };
 }

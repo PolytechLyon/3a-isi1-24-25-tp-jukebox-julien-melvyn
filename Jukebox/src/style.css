@@ -38,6 +38,11 @@ fieldset input
     margin-right: 40px;
 }
 
+fieldset input.last-one
+{
+    margin-right: 0px;
+}
+
 .block
 {
     background-color: lightgray;
