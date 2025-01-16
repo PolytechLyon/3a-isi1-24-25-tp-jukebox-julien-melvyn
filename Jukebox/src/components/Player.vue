@@ -91,10 +91,6 @@ watchEffect(() =>  {
     if (audioRef.value !== null && playedTrack.value !== undefined) {
         audioRef.value.src = playedTrack.value.url;
     }
-    if (playingSameTrack.value === true) {
-        const audio = document.getElementById("audio");
-        togglePause();
-    }
 });
 
 function onError() {
