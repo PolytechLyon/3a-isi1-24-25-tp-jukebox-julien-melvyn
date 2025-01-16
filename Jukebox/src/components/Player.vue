@@ -75,14 +75,18 @@ function changeAudioPosition(event) {
 }
 
 function nextTrack() {
+    audioRef.value.currentTime = 0;
     playNextTrack(loopingType);
+    if (playingSameTrack.value === true) {
+        togglePause();
+        togglePause();
+    }
 }
 
 function changeLooping(event) {
     if(event.target.id === "loop-forever") loopingType.value = 0;
     if(event.target.id === "loop-track")   loopingType.value = 1;
     if(event.target.id === "loop-once")    loopingType.value = 2;
-    console.log(loopingType.value);
 }
 
 // Observer les changements de la piste jouée
@@ -112,7 +116,7 @@ function onError() {
             <button v-if="paused" @click="togglePause">Play</button>
             <button v-else        @click="togglePause">Pause</button>
             <label for="progress-audio">Music progress:</label>
-            <progress ref="progressRef" id="progress-audio" max="1" :value="progression" @click="changeAudioPosition"></progress>
+            <br/> <progress ref="progressRef" id="progress-audio" max="1" :value="progression" @click="changeAudioPosition"></progress>
         </div>
         <div v-else>
             <p>Choose a track to play.</p>
@@ -125,7 +129,7 @@ function onError() {
             <input type="radio" id="loop-forever" name="loop-type" @click="changeLooping" checked>
             <label for="loop-track">Repeat track</label>
             <input type="radio" id="loop-track" name="loop-type" @click="changeLooping">
-            <label for="loop-once">Don't repeat</label>
+            <label for="loop-once">Loop once</label>
             <input type="radio" id="loop-once" name="loop-type" @click="changeLooping">
         </fieldset>
     </div>

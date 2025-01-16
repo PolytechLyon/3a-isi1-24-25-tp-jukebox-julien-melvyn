@@ -43,7 +43,6 @@ function remove(index) {
 
 // Lecture d'une piste
 function play(index) {
-    playingSameTrack.value = playedTrackIndex.value === index;
     playedTrackIndex.value = index;
 }
 
@@ -66,6 +65,7 @@ function clearAllTracks() {
 
 function playNextTrack(loopingType) {
     console.log("playNextTrack");
+    const oldTrack = playedTrackIndex.value;
     if(loopingType.value === 0) {
         playedTrackIndex.value += 1;
         playedTrackIndex.value = playedTrackIndex.value % list.value.length;
@@ -79,7 +79,13 @@ function playNextTrack(loopingType) {
             playedTrackIndex.value += 1;
             play(playedTrackIndex.value);
         }
-    } 
+    }
+    if(loopingType.value === 2) {
+        playingSameTrack.value = false;
+    }
+    else {
+        playingSameTrack.value = (oldTrack === playedTrackIndex.value);
+    }
 }
 
 // Calculs dérivés

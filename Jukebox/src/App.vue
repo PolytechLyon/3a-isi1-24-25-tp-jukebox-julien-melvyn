@@ -6,9 +6,15 @@ import AddNewTrack from './components/AddNewTrack.vue';
 
 <template>
  	<h1>Jukebox</h1>
-	<Player /> 
-	<PlayList />
-	<AddNewTrack />
+	<div class="block">
+		<Player /> 
+	</div>
+	<div class="block">
+		<PlayList />
+	</div>
+	<div class="block">
+		<AddNewTrack />
+	</div>
 </template>
 
 <style scoped>

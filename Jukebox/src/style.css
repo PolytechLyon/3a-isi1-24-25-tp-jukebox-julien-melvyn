@@ -1,7 +1,15 @@
+body {
+    background-color: rgb(215, 244, 255);
+}
+
 #app
 {
-    margin-left: 30%;
-    margin-right: 30%;
+    margin-left: 25%;
+    margin-right: 25%;
+    background-color: gray;
+    border-radius: 10px;
+    padding: 10px;
+    padding-top: 0px;
 }
 
 .no-wrap
@@ -17,7 +25,7 @@ button, input, select, progress
 
 progress
 {
-    width: 60%;
+    width: calc(100% - 10px);
 }
 
 fieldset{
@@ -28,4 +36,13 @@ fieldset{
 fieldset input
 {
     margin-right: 40px;
+}
+
+.block
+{
+    background-color: lightgray;
+    margin: 5px;
+    padding: 10px;
+    padding-top: 0px;
+    border-radius: 10px;
 }
