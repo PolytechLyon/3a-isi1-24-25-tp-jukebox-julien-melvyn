@@ -66,26 +66,44 @@ function clearAllTracks() {
 function playNextTrack(loopingType) {
     console.log("playNextTrack");
     const oldTrack = playedTrackIndex.value;
+
+    if(loopingType.value === 2) {
+        playingSameTrack.value = false;
+
+    } else {
+        playingSameTrack.value = (oldTrack === playedTrackIndex.value);
+    }
+
     if(loopingType.value === 0) {
+        if (playedTrack.value.isBlocked == true) {
+            playedTrackIndex.value += 1;
+            playNextTrack(loopingType.value);
+            return;
+        }
         playedTrackIndex.value += 1;
         playedTrackIndex.value = playedTrackIndex.value % list.value.length;
         play(playedTrackIndex.value);
+        return;
     }
     if(loopingType.value === 1) {
+        if (playedTrack.value.isBlocked == true) {
+            return;
+        }
         play(playedTrackIndex.value);
     }
     if(loopingType.value === 2) {
         if(playedTrackIndex.value !== list.value.length-1) {
+            if (playedTrack.value.isBlocked == true) {
+                playedTrackIndex.value += 1;
+                playNextTrack(loopingType.value);
+                return;
+            }
             playedTrackIndex.value += 1;
             play(playedTrackIndex.value);
+            return;
         }
     }
-    if(loopingType.value === 2) {
-        playingSameTrack.value = false;
-    }
-    else {
-        playingSameTrack.value = (oldTrack === playedTrackIndex.value);
-    }
+    
 }
 
 // Calculs dérivés

@@ -30,7 +30,7 @@ function togglePause() {
         audioRef.value.play().then(() => {
             console.log("Lecture démarrée avec succès !");
         }).catch(() => {
-            block(playedTrack.value);
+            console.error("");
         });
     } else { // Sinon on le met en pause
         if (!playedTrack.value.isBlocked && playedTrack.value !== null) {
@@ -52,6 +52,7 @@ function onAudioLoaded() {
         audioRef.value.play().then(() => {
             console.log("Lecture démarrée avec succès !");
         }).catch(() => {
+            console.error("Error on onAudioLoaded -> Blocked");
             block(playedTrack.value);
         });
     }
@@ -75,9 +76,10 @@ function changeAudioPosition(event) {
 }
 
 function nextTrack() {
-    audioRef.value.currentTime = 0;
+    //audioRef.value.currentTime = 0;
     playNextTrack(loopingType);
     if (playingSameTrack.value === true) {
+        console.log("next track, playingSameTrack");
         togglePause();
         togglePause();
     }
@@ -93,6 +95,7 @@ function changeLooping(event) {
 watchEffect(() =>  {
     console.log("Change music");
     if (audioRef.value !== null && playedTrack.value !== undefined) {
+        console.log("will play : "+playedTrack.value.index);
         audioRef.value.src = playedTrack.value.url;
     }
 });

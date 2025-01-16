@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from 'vue'
-
 import { usePlayList } from "../composables/usePlayList.js";
 import Track from "./Track.vue";
 
