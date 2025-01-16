@@ -5,6 +5,7 @@ const tracks = readonly(list);  // Liste en lecture seule
 const playedTrackIndex = ref(); // Index de la piste en cours de lecture
 const paused = ref(false);      // État de pause
 const playingSameTrack = ref(false);
+const stopPlaying = ref(false);
 
 // Ajout d'une piste à la liste
 function add(trackName, trackUrl) {
@@ -102,8 +103,10 @@ function playNextTrack(loopingType) {
             play(playedTrackIndex.value);
             return;
         }
+        else {
+            stopPlaying.value = true;
+        }
     }
-    
 }
 
 // Calculs dérivés
@@ -127,5 +130,6 @@ export function usePlayList() {
         block,
         playNextTrack,
         playingSameTrack,
+        stopPlaying,
     };
 }

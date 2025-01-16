@@ -11,6 +11,7 @@ const {
     block,
     playNextTrack,
     playingSameTrack,
+    stopPlaying,
 } = usePlayList();
 
 const audioRef    = ref(null);
@@ -83,12 +84,16 @@ function nextTrack() {
         togglePause();
         togglePause();
     }
+    else if (stopPlaying.value === true) {
+        togglePause();
+    }
 }
 
 function changeLooping(event) {
     if(event.target.id === "loop-forever") loopingType.value = 0;
     if(event.target.id === "loop-track")   loopingType.value = 1;
     if(event.target.id === "loop-once")    loopingType.value = 2;
+    if(event.target.id === "loop-never")   loopingType.value = 3;
 }
 
 // Observer les changements de la piste jouée
@@ -134,6 +139,8 @@ function onError() {
             <input type="radio" id="loop-track" name="loop-type" @click="changeLooping">
             <label for="loop-once">Loop once</label>
             <input type="radio" id="loop-once" name="loop-type" @click="changeLooping">
+            <label for="loop-never">Never repeat</label>
+            <input type="radio" id="loop-never" name="loop-type" @click="changeLooping" class="last-one">
         </fieldset>
     </div>
 </template>
