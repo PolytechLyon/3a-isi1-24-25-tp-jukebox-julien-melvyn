@@ -21,7 +21,7 @@ function updateFile(e) {
 function addTrack() {
     if (!trackUrl.value) return;
 
-    const name = trackName.value || trackUrl.value.split("/").pop().split(".mp3")[0];
+    const name = trackName.value.split(".mp3")[0] || trackUrl.value.split("/").pop().split(".mp3")[0];
     add(name, trackUrl.value);
 
     const inputFile = document.getElementById("inputFile");
