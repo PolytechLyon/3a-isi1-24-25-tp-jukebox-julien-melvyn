@@ -37,6 +37,9 @@ function remove(index) {
 
     if (list.value.length > 1) {
         list.value.splice(index, 1);
+        for (var i = index; i < list.value.length; i++) { // Change index of tracks after the deleted one
+            list.value[i].index -= 1;
+        }
     } else {
         list.value = [];
     }
@@ -68,21 +71,19 @@ function clearAllTracks() {
 function playNextTrack(loopingType) {
     console.log("playNextTrack");
     const oldTrack = playedTrackIndex.value;
-    if(loopingType.value === 2 || loopingType.value === 3) {
-        playingSameTrack.value = false;
-
-    } else {
-        playingSameTrack.value = (oldTrack === playedTrackIndex.value);
-    }
-
+    playingSameTrack.value = false;
+    stopPlaying.value = false;
+    
     if(loopingType.value === 0) {
         if (playedTrack.value.isBlocked == true) {
             playedTrackIndex.value += 1;
+            playedTrackIndex.value = playedTrackIndex.value % list.value.length;
             playNextTrack(loopingType.value);
             return;
         }
         playedTrackIndex.value += 1;
         playedTrackIndex.value = playedTrackIndex.value % list.value.length;
+        playingSameTrack.value = (oldTrack === playedTrackIndex.value);
         play(playedTrackIndex.value);
         return;
     }
@@ -90,6 +91,7 @@ function playNextTrack(loopingType) {
         if (playedTrack.value.isBlocked == true) {
             return;
         }
+        playingSameTrack.value = true;
         play(playedTrackIndex.value);
     }
     if(loopingType.value === 2) {

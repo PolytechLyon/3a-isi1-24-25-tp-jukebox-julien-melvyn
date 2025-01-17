@@ -79,17 +79,17 @@ function changeAudioPosition(event) {
 function nextTrack() {
     //audioRef.value.currentTime = 0;
     playNextTrack(loopingType);
-    if (playingSameTrack.value === true) {
+    if (playingSameTrack.value === true) { // pause and play to start the track again
         console.log("next track, playingSameTrack");
         togglePause();
         togglePause();
     }
-    else if (stopPlaying.value === true) {
+    else if (stopPlaying.value === true) { // if no music is played after, set the "play" button to "play" instead of "pause"
         togglePause();
     }
 }
 
-function changeLooping(event) {
+function changeLooping(event) { // update which radio button is on
     if(event.target.id === "loop-forever") loopingType.value = 0;
     if(event.target.id === "loop-track")   loopingType.value = 1;
     if(event.target.id === "loop-once")    loopingType.value = 2;
