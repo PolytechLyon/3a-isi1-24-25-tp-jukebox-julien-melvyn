@@ -8,7 +8,8 @@ const props = defineProps({
 
 const {
     remove,
-    play
+    play,
+    playedTrack,
 } = usePlayList();
 
 function removeTrack() {
@@ -24,7 +25,7 @@ function playTrack() {
 <template>
     <ul>
         <span :style="[props.track.isBlocked == true ? 'text-decoration: line-through' : '']">{{ props.track.title }}</span>
-        <button @click="playTrack" :disabled="props.track.isBlocked == true">play</button>
+        <button @click="playTrack" :disabled="props.track.isBlocked === true || playedTrack.index === props.track.index">play</button>
         <button @click="removeTrack">delete</button>
     </ul>
 </template>
